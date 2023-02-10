@@ -10,6 +10,7 @@ const bodyParser =require('body-parser');
 // parsing incoming requestst
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Filtering paths
 app.use('/admin',adminRoutes);
