@@ -1,19 +1,23 @@
 const path = require('path');
+
 const express = require('express');
 
-/// helper function for navigation
 const rootDir = require('../util/path');
 
 const router = express.Router();
 
-// for get 
-router.get('/add-product', (req, res, next)=> {
-    res.sendFile(path.join(rootDir, 'views', 'addProduct.html'));
-});
-//for post
-router.post('/add-product', (req, res, next) =>{
-    console.log(req.body);
-    res.redirect('/');
+const products = [];
+
+// /admin/add-product => GET
+router.get('/add-product', (req, res, next) => {
+  res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 });
 
-module.exports =router;
+// /admin/add-product => POST
+router.post('/add-product', (req, res, next) => {
+  products.push({ title: req.body.title });
+  res.redirect('/');
+});
+
+exports.routes = router;
+exports.products = products;
