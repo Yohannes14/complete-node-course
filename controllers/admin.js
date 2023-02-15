@@ -1,4 +1,4 @@
-const product = require('../models/product');
+const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -13,13 +13,9 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  req.user
-    .createProduct({
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
-      description: description
-    })
+  const product = new Product(title, price, description, imageUrl);
+  product
+    .save()
     .then(result => {
       // console.log(result);
       console.log('Created Product');
