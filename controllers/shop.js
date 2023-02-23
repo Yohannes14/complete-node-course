@@ -33,7 +33,9 @@ exports.getProduct = (req, res, next) => {
         path: '/products'
       });
     })
-    .catch(err => console.log(err));
+    .catch(err =>{
+      console.log(err)
+    });
 };
 
 exports.getIndex = (req, res, next) => {
@@ -89,7 +91,7 @@ exports.postCart = (req, res, next) => {
         newQuantity = oldQuantity + 1;
         return product;
       }
-      return Product.findByPk(prodId);
+      return Product.findById(prodId);
     })
     .then(product => {
       return fetchedCart.addProduct(product, {
