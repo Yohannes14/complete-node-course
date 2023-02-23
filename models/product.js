@@ -3,7 +3,7 @@ const getDb = require('../util/database').getDb;
 
 
 class Product {
-  constructor(title, price, description, imageUrl, id) {
+  constructor(title, price, description, imageUrl, id, userId) {
 
     this.title = title;
     this.price = price;
@@ -11,6 +11,7 @@ class Product {
     this.imageUrl = imageUrl,
       // this._id = id;
     this._id = id ? new mongodb.ObjectId(id) : null;
+    this.userId = userId
   }
   save() {
     const db = getDb();
