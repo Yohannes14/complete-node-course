@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema =mongoose.Schema;
+
+const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
   title: {
@@ -13,7 +14,6 @@ const productSchema = new Schema({
   description: {
     type: String,
     required: true
-
   },
   imageUrl: {
     type: String,
@@ -25,12 +25,11 @@ const productSchema = new Schema({
     required: true
   }
 });
+
 module.exports = mongoose.model('Product', productSchema);
 
-
-
-////////////////////////////////////////
 // const mongodb = require('mongodb');
+// const getDb = require('../util/database').getDb;
 
 // class Product {
 //   constructor(title, price, description, imageUrl, id, userId) {
