@@ -36,7 +36,6 @@ exports.getIndex = (req, res, next) => {
         prods: products,
         pageTitle: 'Shop',
         path: '/'
-  
       });
     })
     .catch(err => {
@@ -54,7 +53,6 @@ exports.getCart = (req, res, next) => {
         path: '/cart',
         pageTitle: 'Your Cart',
         products: products
-
       });
     })
     .catch(err => console.log(err));
@@ -114,7 +112,7 @@ exports.getOrders = (req, res, next) => {
       res.render('shop/orders', {
         path: '/orders',
         pageTitle: 'Your Orders',
-        orders: orders,
+        orders: orders
       });
     })
     .catch(err => console.log(err));
