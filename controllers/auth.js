@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -18,51 +19,66 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('5bab316ce0a7c75f783cb8a8')
+  const email = req.body.email;
+  const password = req.body.password;
+  //find user by email
+  User.findOne({ email: email })
     .then(user => {
-      req.session.isLoggedIn = true;
-      req.session.user = user;
-      req.session.save(err => {
-        console.log(err);
-        res.redirect('/');
-      });
+      if (!user) {
+        return res.redirect('/login');
+      }
+      // to campare password
+      bcrypt
+        .compare(password, user.password)
+        .then(doMatch => {
+          if (doMatch) {
+            // to save session
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            return req.session.save(err => {
+              console.log(err);
+              res.redirect('/');
+            });
+          }
+          res.redirect('/login');
+        })
+        .catch(err => {
+          console.log(err);
+          res.redirect('/login');
+        });
     })
     .catch(err => console.log(err));
 };
 
 exports.postSignup = (req, res, next) => {
-  // from the view form
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  User
-    .findOne({ email: email })
+  User.findOne({ email: email })
     .then(userDoc => {
-      // user is have
+      // to check user is exists
       if (userDoc) {
         return res.redirect('/signup');
       }
-      // to encrpying password
+      // to encrypt password
       return bcrypt
         .hash(password, 12)
-        .then(hashedpass => {
-          // create user
+        .then(hashedPassword => {
+          // to create user
           const user = new User({
             email: email,
-            password: hashedpass,
+            password: hashedPassword,
             cart: { items: [] }
           });
           return user.save();
         })
-        .then(() => {
+        .then(result => {
           res.redirect('/login');
-        })
+        });
     })
-
     .catch(err => {
       console.log(err);
     });
-
 };
 
 exports.postLogout = (req, res, next) => {
